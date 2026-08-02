@@ -1,0 +1,6 @@
+{
+  "name": "Profit Automobile Store",
+  "description": "Ultra-Premium Automotive Retail Chain website by Big Business House featuring Genuine Spare Parts, Lubricants, Accessories, Franchise Portal & AI Compatibility Assistant",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
