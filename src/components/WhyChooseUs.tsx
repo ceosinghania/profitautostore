@@ -44,7 +44,7 @@ export const WhyChooseUs: React.FC = () => {
     },
     {
       title: 'Customer Satisfaction',
-      desc: '4.9 Star rated customer service with 24x7 helpline and hassle-free warranty claim process.',
+      desc: '4.9 Star rated customer service with dedicated email support (Info@profitautostore.in) and hassle-free warranty claim process.',
       icon: Smile,
       highlight: '4.9 ★ Rating'
     },

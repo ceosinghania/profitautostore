@@ -110,9 +110,18 @@ export const AIChatWidget: React.FC<AIChatWidgetProps> = ({
           </div>
         </div>
 
-        <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-white rounded-lg bg-gray-900">
-          <X className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          <a
+            href="mailto:Info@profitautostore.in"
+            className="px-2 py-1 bg-red-900/60 hover:bg-red-700 border border-red-500/40 rounded text-[10px] text-white font-bold flex items-center gap-1"
+            title="Email us directly at Info@profitautostore.in"
+          >
+            ✉ Email Desk
+          </a>
+          <button onClick={onClose} className="p-1.5 text-gray-400 hover:text-white rounded-lg bg-gray-900">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Vehicle Context Bar */}
@@ -154,12 +163,12 @@ export const AIChatWidget: React.FC<AIChatWidgetProps> = ({
       </div>
 
       {/* Quick Prompts */}
-      <div className="px-3 py-2 bg-black/60 border-t border-gray-800/60 flex items-center gap-2 overflow-x-auto text-[10px]">
-        {['Engine Oil for Creta', 'Exide Battery Price', 'Android Stereo Specs', 'Franchise Cost'].map((p, i) => (
+      <div className="px-3 py-2 bg-black/60 border-t border-gray-800/60 flex items-center gap-2 overflow-x-auto text-[10px] scrollbar-none">
+        {['Price of 900ml Castrol Oil', 'Castrol 3.5L Oil Cost', 'Exide Battery Price', 'Android Stereo Specs', 'Franchise Cost'].map((p, i) => (
           <button
             key={i}
             onClick={() => setInput(p)}
-            className="px-2.5 py-1 bg-gray-900 hover:bg-red-950 text-gray-300 rounded-lg border border-gray-800 whitespace-nowrap transition-colors"
+            className="px-2.5 py-1 bg-gray-900 hover:bg-red-950 hover:text-amber-300 text-gray-300 rounded-lg border border-gray-800 whitespace-nowrap transition-colors flex-shrink-0"
           >
             {p}
           </button>

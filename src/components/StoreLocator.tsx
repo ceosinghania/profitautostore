@@ -77,8 +77,8 @@ export const StoreLocator: React.FC = () => {
 
                   <div className="flex items-center gap-4 text-[11px] text-gray-300 pt-1">
                     <span className="flex items-center gap-1">
-                      <Phone className="w-3 h-3 text-red-500" />
-                      {store.phone}
+                      <Mail className="w-3 h-3 text-red-500" />
+                      {selectedStore.email || 'Info@profitautostore.in'}
                     </span>
                     <span className="flex items-center gap-1 text-emerald-400 font-semibold">
                       <Clock className="w-3 h-3" /> Open
@@ -133,10 +133,10 @@ export const StoreLocator: React.FC = () => {
               </div>
 
               <div className="p-4 bg-black rounded-xl border border-gray-800 space-y-1">
-                <span className="text-[10px] text-gray-500 uppercase font-bold block">Direct Hotline</span>
+                <span className="text-[10px] text-gray-500 uppercase font-bold block">Contact Email</span>
                 <span className="text-white font-semibold flex items-center gap-1.5">
-                  <Phone className="w-3.5 h-3.5 text-red-500" />
-                  {selectedStore.phone}
+                  <Mail className="w-3.5 h-3.5 text-red-500" />
+                  Info@profitautostore.in
                 </span>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, X, Trash2, Plus, Minus, FileText, Printer, Building2, CheckCircle2, ShieldCheck, Send } from 'lucide-react';
+import { ShoppingBag, X, Trash2, Plus, Minus, FileText, Printer, Building2, CheckCircle2, ShieldCheck, Send, Mail } from 'lucide-react';
 import { QuoteItem, VehicleSelection } from '../types';
 
 interface QuoteDrawerProps {
@@ -35,8 +35,43 @@ export const QuoteDrawer: React.FC<QuoteDrawerProps> = ({
   const gstEstimate = Math.round(subtotal * 0.18);
   const grandTotal = subtotal + gstEstimate;
 
-  const handlePrint = () => {
-    window.print();
+  const handleEmailEnquiry = async () => {
+    // Generate mailto link
+    const subject = encodeURIComponent(`Product Quotation Enquiry - ${customerDetails.name || 'Valued Customer'}`);
+    const itemsList = quoteItems.map((item, idx) => `${idx + 1}. ${item.product.name} (${item.product.brand}) - Qty: ${item.quantity} x ₹${item.product.price}`).join('\n');
+    
+    const body = encodeURIComponent(
+      `Hello Profit Automobile Store Team,\n\nI would like to submit a formal product enquiry / quotation request.\n\n` +
+      `CUSTOMER DETAILS:\n` +
+      `Name: ${customerDetails.name || 'N/A'}\n` +
+      `Phone: ${customerDetails.phone || 'N/A'}\n` +
+      `Company: ${customerDetails.companyName || 'N/A'}\n\n` +
+      `VEHICLE SELECTION:\n` +
+      `Vehicle: ${selectedVehicle.make ? `${selectedVehicle.make} ${selectedVehicle.model} (${selectedVehicle.year})` : 'Universal / General Automobile'}\n\n` +
+      `ENQUIRY ITEMS:\n${itemsList}\n\n` +
+      `ESTIMATED TOTAL: ₹${grandTotal.toLocaleString('en-IN')} (incl. GST)\n\n` +
+      `Please contact me with availability and dispatch details.\n\nThank you!`
+    );
+
+    // Call server API to log
+    try {
+      await fetch('/api/quote/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: customerDetails.name,
+          phone: customerDetails.phone,
+          email: customerDetails.email,
+          items: quoteItems,
+          targetEmail: 'Info@profitautostore.in'
+        })
+      });
+    } catch (e) {
+      console.log('Quote logged locally');
+    }
+
+    // Trigger mailto link
+    window.location.href = `mailto:Info@profitautostore.in?subject=${subject}&body=${body}`;
   };
 
   if (!isOpen) return null;
@@ -153,8 +188,9 @@ export const QuoteDrawer: React.FC<QuoteDrawerProps> = ({
                 <p className="text-[11px] text-gray-600 font-bold uppercase tracking-widest">
                   Retail Chain of Big Business House
                 </p>
-                <p className="text-[10px] text-gray-500">Corporate HQ: Plot 45, Okhla Industrial Area Phase-III, New Delhi - 110020</p>
-                <p className="text-[10px] text-gray-500">GSTIN: 07AABCP1234F1Z9 | Toll Free: 1800-102-PROFIT</p>
+                <p className="text-[10px] text-gray-500">Corporate Office: Motera PVR Building, Ahmedabad - 380005</p>
+                <p className="text-[10px] text-gray-500">Overseas Office: Virtual Office at Dubai, UAE</p>
+                <p className="text-[10px] text-gray-500">GSTIN: 24AABCP1234F1Z9 | Email: Info@profitautostore.in</p>
               </div>
 
               <div className="text-right">
@@ -258,13 +294,17 @@ export const QuoteDrawer: React.FC<QuoteDrawerProps> = ({
             </div>
 
             {/* Actions Bar */}
-            <div className="flex items-center justify-end gap-3 pt-6 mt-6 border-t print:hidden">
+            <div className="flex flex-wrap items-center justify-end gap-3 pt-6 mt-6 border-t print:hidden">
               <button onClick={() => setShowPdfModal(false)} className="px-4 py-2 bg-gray-200 text-gray-800 text-xs font-bold rounded-lg">
                 Close
               </button>
-              <button onClick={handlePrint} className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-lg shadow-lg flex items-center gap-2">
+              <button onClick={() => window.print()} className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold rounded-lg flex items-center gap-2">
                 <Printer className="w-4 h-4" />
-                <span>Print / Download PDF Quotation</span>
+                <span>Print PDF</span>
+              </button>
+              <button onClick={handleEmailEnquiry} className="px-5 py-2 bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-bold rounded-lg shadow-lg flex items-center gap-2">
+                <Mail className="w-4 h-4 text-white" />
+                <span>Submit Enquiry to Info@profitautostore.in</span>
               </button>
             </div>
 

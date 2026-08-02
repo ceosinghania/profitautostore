@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, Building2, TrendingUp, CheckCircle2, DollarSign, PieChart, ShieldCheck, Send, Sparkles, PhoneCall } from 'lucide-react';
+import { Award, Building2, TrendingUp, CheckCircle2, DollarSign, PieChart, ShieldCheck, Send, Sparkles, Mail } from 'lucide-react';
 import { FRANCHISE_TIERS } from '../data/storeData';
 
 export const FranchisePortal: React.FC = () => {
@@ -171,11 +171,11 @@ export const FranchisePortal: React.FC = () => {
                     ★ Official Big Business House Franchise Partner License
                   </div>
                   <a
-                    href="tel:18001027763"
+                    href="mailto:Info@profitautostore.in"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-black font-bold text-xs rounded-lg shadow-lg"
                   >
-                    <PhoneCall className="w-3.5 h-3.5" />
-                    <span>Call Franchise Desk: 1800-102-PROFIT</span>
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Email Desk: Info@profitautostore.in</span>
                   </a>
                 </div>
               </div>
@@ -202,15 +202,24 @@ export const FranchisePortal: React.FC = () => {
                 </div>
 
                 {reportResult.feasibilityReport && (
-                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-emerald-900 text-xs">
-                    <div className="p-3 bg-black/60 rounded-xl">
-                      <span className="text-[10px] text-gray-400 block">Territory Score</span>
-                      <span className="font-bold text-emerald-400">{reportResult.feasibilityReport.score}</span>
+                  <div className="space-y-3 pt-3 border-t border-emerald-900 text-xs">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 bg-black/60 rounded-xl">
+                        <span className="text-[10px] text-gray-400 block">Territory Score</span>
+                        <span className="font-bold text-emerald-400">{reportResult.feasibilityReport.score}</span>
+                      </div>
+                      <div className="p-3 bg-black/60 rounded-xl">
+                        <span className="text-[10px] text-gray-400 block">Estimated Profit</span>
+                        <span className="font-bold text-amber-300">{reportResult.feasibilityReport.estimatedMonthlyProfit}</span>
+                      </div>
                     </div>
-                    <div className="p-3 bg-black/60 rounded-xl">
-                      <span className="text-[10px] text-gray-400 block">Estimated Profit</span>
-                      <span className="font-bold text-amber-300">{reportResult.feasibilityReport.estimatedMonthlyProfit}</span>
-                    </div>
+
+                    <a
+                      href={`mailto:Info@profitautostore.in?subject=${encodeURIComponent(`Franchise Inquiry - ${formData.fullName} (${formData.city})`)}&body=${encodeURIComponent(`Franchise Application Details:\n\nName: ${formData.fullName}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nCity: ${formData.city}\nInvestment Budget: ${formData.investmentBudget}\nCommercial Space: ${formData.proposedSpace}\n\nEnquiry routed to Info@profitautostore.in`)}`}
+                      className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-extrabold rounded-xl text-center block text-xs shadow-md transition-all"
+                    >
+                      ✉ Send Direct Email Copy to Info@profitautostore.in
+                    </a>
                   </div>
                 )}
               </div>

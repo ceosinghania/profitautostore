@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Car, ShieldCheck, Wrench, Search, MapPin, Award, 
-  FileText, PhoneCall, Sparkles, ChevronRight, CheckCircle2, Star
+  FileText, Mail, Sparkles, ChevronRight, CheckCircle2, Star
 } from 'lucide-react';
 import { VehicleSelection } from '../types';
 
@@ -127,13 +127,13 @@ export const Hero: React.FC<HeroProps> = ({
                 <span>Request Quote</span>
               </button>
 
-              {/* Call Now */}
+              {/* Email Us */}
               <a
-                href="tel:18001027763"
+                href="mailto:Info@profitautostore.in"
                 className="px-4 py-3.5 bg-emerald-700 hover:bg-emerald-600 text-white font-semibold rounded-xl transition-all flex items-center gap-2 text-sm"
               >
-                <PhoneCall className="w-4 h-4" />
-                <span>Call Now</span>
+                <Mail className="w-4 h-4" />
+                <span>Email Us</span>
               </a>
             </div>
           </div>

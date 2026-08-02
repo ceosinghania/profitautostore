@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Car, Building2, Phone, Mail, MapPin, ShieldCheck, 
-  Award, ChevronRight, MessageSquare
+  Award, ChevronRight, MessageSquare, Globe
 } from 'lucide-react';
 import { PRODUCT_CATEGORIES } from '../data/storeData';
 
@@ -55,11 +55,11 @@ export const Footer: React.FC<FooterProps> = ({
             </button>
 
             <a
-              href="tel:18001027763"
+              href="mailto:Info@profitautostore.in"
               className="px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2"
             >
-              <Phone className="w-4 h-4" />
-              <span>Toll Free: 1800-102-PROFIT</span>
+              <Mail className="w-4 h-4" />
+              <span>Info@profitautostore.in</span>
             </a>
           </div>
         </div>
@@ -91,15 +91,15 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="space-y-2 text-xs pt-2">
             <div className="flex items-start gap-2 text-gray-300">
               <MapPin className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-              <span>Corporate HQ: Plot 45, Okhla Industrial Area Phase-III, New Delhi - 110020</span>
+              <span>Corporate Office: Motera PVR Building, Ahmedabad - 380005</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-300">
-              <Phone className="w-4 h-4 text-red-500 flex-shrink-0" />
-              <span>Support Line: +91 (011) 4567-8900 / Toll Free 1800-102-7763</span>
+            <div className="flex items-start gap-2 text-gray-300">
+              <Globe className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+              <span>Overseas Office: Virtual Office at Dubai, UAE</span>
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <Mail className="w-4 h-4 text-red-500 flex-shrink-0" />
-              <span>Corporate Email: info@profitautomobilestore.com</span>
+              <span>Corporate Email: Info@profitautostore.in</span>
             </div>
           </div>
         </div>

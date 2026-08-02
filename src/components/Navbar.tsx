@@ -63,9 +63,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <div className="flex items-center gap-4 text-gray-300">
-            <a href="tel:18001027763" className="flex items-center gap-1 hover:text-red-400 transition-colors">
-              <Phone className="w-3.5 h-3.5 text-red-500" />
-              <span className="font-semibold">Toll Free: 1800-102-PROFIT</span>
+            <a href="mailto:Info@profitautostore.in" className="flex items-center gap-1 hover:text-red-400 transition-colors">
+              <Mail className="w-3.5 h-3.5 text-red-500" />
+              <span className="font-semibold">Info@profitautostore.in</span>
             </a>
             <span className="text-gray-600">|</span>
             <button 

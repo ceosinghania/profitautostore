@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { BrandCarousel } from './components/BrandCarousel';
+import { VehicleServiceHighway } from './components/VehicleServiceHighway';
 import { AboutSection } from './components/AboutSection';
 import { WhyChooseUs } from './components/WhyChooseUs';
 import { ProductCatalog } from './components/ProductCatalog';
@@ -106,6 +107,9 @@ export function App() {
 
         {/* 2. Featured OEM Brand Ticker */}
         <BrandCarousel />
+
+        {/* Live Multi-Vehicle Service Highway Animation */}
+        <VehicleServiceHighway />
 
         {/* 3. Corporate About Section */}
         <AboutSection />

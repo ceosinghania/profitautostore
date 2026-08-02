@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Search, Filter, ShoppingBag, CheckCircle2, Sparkles, 
-  Car, Eye, ShieldCheck, Tag, Star, ChevronRight, X, ArrowUpDown
+  Car, Eye, ShieldCheck, Tag, Star, ChevronRight, X, ArrowUpDown,
+  Building2, Layers, Award, Wrench, Zap, Droplet, Disc, Tv, ShieldAlert,
+  Flame, Armchair, Box
 } from 'lucide-react';
-import { PRODUCT_CATEGORIES } from '../data/storeData';
+import { PRODUCT_CATEGORIES, BRAND_PARTNERS } from '../data/storeData';
 import { Product, VehicleSelection, QuoteItem } from '../types';
 
 interface ProductCatalogProps {
@@ -13,6 +15,99 @@ interface ProductCatalogProps {
   onAddQuoteItem: (product: Product) => void;
   onOpenAiChat: () => void;
 }
+
+// Small product visual thumbnails for "In One Store Consumer Gets Each Product" showcase
+const ONE_STORE_PRODUCT_THUMBNAILS = [
+  {
+    id: 'thumb-oil',
+    title: 'Engine Oils & Fluids',
+    brandBadge: 'Castrol • Mobil 1 • Shell • Motul',
+    image: 'https://images.unsplash.com/photo-1615906655593-ad0386982a0f?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'lubricants',
+    priceStart: '₹499'
+  },
+  {
+    id: 'thumb-battery',
+    title: 'Zero Maintenance Batteries',
+    brandBadge: 'Exide • Amaron • SF Sonic',
+    image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'batteries',
+    priceStart: '₹1,299'
+  },
+  {
+    id: 'thumb-stereo',
+    title: 'Android Stereos & Dashcams',
+    brandBadge: 'Pioneer • JBL • PROFIT Ultra',
+    image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'accessories',
+    priceStart: '₹4,999'
+  },
+  {
+    id: 'thumb-brakes',
+    title: 'Brake Pads & Discs',
+    brandBadge: 'Bosch • Brembo • TVS',
+    image: 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'spare-parts',
+    priceStart: '₹850'
+  },
+  {
+    id: 'thumb-filters',
+    title: 'PM2.5 Air & Oil Filters',
+    brandBadge: 'Bosch • Mann-Filter • Elofic',
+    image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'filters',
+    priceStart: '₹350'
+  },
+  {
+    id: 'thumb-detailing',
+    title: '3M Ceramic Polish & Wash',
+    brandBadge: '3M • Meguiar\'s • SONAX',
+    image: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'car-care',
+    priceStart: '₹299'
+  },
+  {
+    id: 'thumb-seats',
+    title: 'Nappa Leather Seat Covers',
+    brandBadge: 'PROFIT Custom Tailored',
+    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'seat-covers',
+    priceStart: '₹3,500'
+  },
+  {
+    id: 'thumb-alloys',
+    title: 'Sports Alloys & Tyres',
+    brandBadge: 'Bridgestone • Michelin • MRF • JK',
+    image: 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'alloy-wheels',
+    priceStart: '₹18,500'
+  },
+  {
+    id: 'thumb-helmet',
+    title: 'ECE Helmets & Rider Gear',
+    brandBadge: 'Axor • Studds • Vega',
+    image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'helmets-rider',
+    priceStart: '₹1,199'
+  },
+  {
+    id: 'thumb-modification',
+    title: 'Body Kits & LED Matrix Lights',
+    brandBadge: 'Osram • Philips • PROFIT Works',
+    image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=300&q=80',
+    categoryId: 'modification',
+    priceStart: '₹2,499'
+  }
+];
+
+// All premium brands list for quick tag filtering
+const ALL_PREMIUM_BRANDS = [
+  'Castrol', 'Mobil 1', 'Shell', 'Motul', 'Liqui Moly',
+  'Bosch', 'Exide', 'Amaron', '3M Automotive', 'Meguiar\'s', 'SONAX',
+  'Pioneer', 'JBL', 'Blaupunkt', 'Osram', 'Philips',
+  'Michelin', 'Bridgestone', 'MRF', 'JK Tyre', 'CEAT',
+  'Brembo', 'PROFIT Signature', 'Axor', 'Studds'
+];
 
 export const ProductCatalog: React.FC<ProductCatalogProps> = ({
   selectedCategory,
@@ -71,19 +166,19 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
 
   return (
     <section id="categories" className="py-20 bg-[#0B0B0B] text-white border-b border-red-900/30 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-red-950/80 rounded-full border border-red-700/40 text-red-400 text-xs font-bold uppercase tracking-widest mb-3">
-              Comprehensive Portfolio
+              Comprehensive One-Stop Megastore
             </div>
             <h2 className="text-3xl sm:text-5xl font-black uppercase font-display tracking-tight">
               PRODUCT <span className="text-red-600">CATEGORIES</span>
             </h2>
-            <p className="text-gray-400 text-sm mt-1 max-w-xl">
-              100% Genuine Lubricants, Batteries, Accessories, Spare Parts, Filters & Detailing Products.
+            <p className="text-gray-400 text-sm mt-1 max-w-2xl">
+              In ONE Store, consumers get EACH and EVERY automotive product — 100% Genuine Lubricants, Batteries, Electronics, Spare Parts, Tyres, Filters, Rider Gear & Detailing Supplies.
             </p>
           </div>
 
@@ -97,8 +192,128 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
           </button>
         </div>
 
+        {/* 1. "IN ONE STORE CONSUMER GETS EACH PRODUCT" CONCEPT BANNER */}
+        <div className="bg-gradient-to-r from-red-950/90 via-[#180808] to-black rounded-2xl border-2 border-red-600/60 p-6 md:p-8 shadow-2xl relative overflow-hidden">
+          {/* Subtle Ambient Overlay */}
+          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-red-900/50 pb-4">
+              <div>
+                <span className="px-3 py-1 bg-amber-500 text-black font-extrabold text-[10px] rounded-full uppercase tracking-wider mb-2 inline-block shadow-md">
+                  ★ ONE STORE CONCEPT ★
+                </span>
+                <h3 className="text-xl sm:text-3xl font-black text-white uppercase tracking-tight">
+                  ONE STORE FOR EACH & EVERY AUTOMOTIVE PRODUCT
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-300 mt-1">
+                  Why visit 10 different shops? <strong className="text-white">Profit Automobile Store</strong> brings world-renowned OEM brand partners under a single roof with instant 3D fitment & warranty.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 text-xs">
+                <div className="px-3 py-2 bg-black/80 rounded-xl border border-red-800/40 text-center">
+                  <span className="text-amber-400 font-extrabold text-sm block">25,000+</span>
+                  <span className="text-gray-400 text-[10px] uppercase font-bold">Genuine SKUs</span>
+                </div>
+                <div className="px-3 py-2 bg-black/80 rounded-xl border border-red-800/40 text-center">
+                  <span className="text-red-400 font-extrabold text-sm block">50+</span>
+                  <span className="text-gray-400 text-[10px] uppercase font-bold">Global OEM Brands</span>
+                </div>
+                <div className="px-3 py-2 bg-black/80 rounded-xl border border-red-800/40 text-center">
+                  <span className="text-emerald-400 font-extrabold text-sm block">100%</span>
+                  <span className="text-gray-400 text-[10px] uppercase font-bold">Genuine Guarantee</span>
+                </div>
+              </div>
+            </div>
+
+            {/* SMALL PRODUCT IMAGES SHOWCASE GRID */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Layers className="w-4 h-4 text-red-500" />
+                  <span>Explore Available Products In-Store (Small Visual Preview)</span>
+                </span>
+                <span className="text-[11px] text-amber-400 font-medium">Click thumbnail to filter category</span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                {ONE_STORE_PRODUCT_THUMBNAILS.map((thumb) => (
+                  <div
+                    key={thumb.id}
+                    onClick={() => onSelectCategory(thumb.categoryId)}
+                    className={`bg-black/80 hover:bg-red-950/80 rounded-xl border ${
+                      selectedCategory === thumb.categoryId ? 'border-amber-400 ring-2 ring-amber-400/30' : 'border-gray-800 hover:border-red-500'
+                    } p-2.5 cursor-pointer transition-all duration-300 group shadow-md flex flex-col justify-between`}
+                  >
+                    <div className="relative h-20 rounded-lg overflow-hidden bg-gray-900 mb-2">
+                      <img 
+                        src={thumb.image} 
+                        alt={thumb.title} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute top-1 left-1 bg-black/80 px-1.5 py-0.5 rounded text-[8px] font-extrabold text-amber-400 uppercase">
+                        {thumb.priceStart}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="text-[11px] font-bold text-white group-hover:text-amber-300 line-clamp-1">
+                        {thumb.title}
+                      </h4>
+                      <p className="text-[9px] text-gray-400 line-clamp-1 mt-0.5">
+                        {thumb.brandBadge}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* 2. PREMIUM BRAND PARTNERS NAMES TICKER & FILTER STRIP */}
+        <div className="bg-[#121212] rounded-2xl border border-red-900/40 p-4 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800 pb-2">
+            <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <Award className="w-4 h-4 text-amber-400" />
+              <span>Official Premium Brand Partners Available at Profit Store</span>
+            </span>
+            <span className="text-[11px] text-gray-400">All brands backed by national warranty</span>
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            <button
+              onClick={() => setSelectedBrandFilter('ALL')}
+              className={`px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition-all border ${
+                selectedBrandFilter === 'ALL'
+                  ? 'bg-amber-500 text-black border-amber-400'
+                  : 'bg-black text-gray-300 border-gray-800 hover:border-gray-600'
+              }`}
+            >
+              All Brands ({ALL_PREMIUM_BRANDS.length})
+            </button>
+
+            {ALL_PREMIUM_BRANDS.map((bName) => (
+              <button
+                key={bName}
+                onClick={() => setSelectedBrandFilter(bName)}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all border ${
+                  selectedBrandFilter.toLowerCase() === bName.toLowerCase()
+                    ? 'bg-red-600 text-white border-red-500 font-bold'
+                    : 'bg-black/80 text-gray-300 border-gray-800 hover:border-red-900/60'
+                }`}
+              >
+                {bName}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Search & Filter Header Bar */}
-        <div className="bg-[#121212] border border-red-900/40 rounded-2xl p-4 mb-8 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+        <div className="bg-[#121212] border border-red-900/40 rounded-2xl p-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           {/* Search Input */}
           <div className="md:col-span-6 relative">
             <Search className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -126,14 +341,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
               onChange={(e) => setSelectedBrandFilter(e.target.value)}
               className="w-full bg-black border border-gray-800 focus:border-red-500 rounded-xl px-3 py-2.5 text-xs text-gray-200 outline-none"
             >
-              <option value="ALL">All Partner Brands</option>
-              <option value="Castrol">Castrol</option>
-              <option value="Mobil 1">Mobil 1</option>
-              <option value="Bosch">Bosch</option>
-              <option value="Exide">Exide</option>
-              <option value="Amaron">Amaron</option>
-              <option value="3M Automotive">3M Automotive</option>
-              <option value="PROFIT Signature">PROFIT Signature</option>
+              <option value="ALL">Filter by Brand (All Partner Brands)</option>
+              {ALL_PREMIUM_BRANDS.map(b => (
+                <option key={b} value={b}>{b}</option>
+              ))}
             </select>
           </div>
 
@@ -157,10 +368,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
         </div>
 
         {/* Category Pill Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           <button
             onClick={() => onSelectCategory('ALL')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
+            className={`px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
               selectedCategory === 'ALL'
                 ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-900/50'
                 : 'bg-gray-900/80 text-gray-300 border-gray-800 hover:border-red-900/50'
@@ -173,7 +384,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
             <button
               key={cat.id}
               onClick={() => onSelectCategory(cat.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border flex items-center gap-2 ${
+              className={`px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border flex items-center gap-2 ${
                 selectedCategory === cat.id
                   ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-900/50 font-bold'
                   : 'bg-gray-900/80 text-gray-300 border-gray-800 hover:border-red-900/50'
@@ -244,6 +455,9 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                       <Star className="w-3.5 h-3.5 fill-amber-400" />
                       <span>{product.rating}</span>
                       <span className="text-gray-500 text-[10px]">({product.reviewsCount} reviews)</span>
+                      <span className="ml-auto text-[9px] px-1.5 py-0.5 bg-red-950 text-red-300 rounded font-bold uppercase">
+                        Profit Store Stock
+                      </span>
                     </div>
 
                     <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-red-400 transition-colors">
